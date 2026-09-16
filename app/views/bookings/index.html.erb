@@ -1,0 +1,38 @@
+<section class="bookings-page">
+  <div class="page-heading">
+    <div>
+      <p class="eyebrow">Account</p>
+      <h1>My Bookings</h1>
+    </div>
+    <%= link_to "Search Trips", trips_path, class: "secondary-button" %>
+  </div>
+
+  <% if @bookings.present? %>
+    <div class="booking-list">
+      <% @bookings.each do |booking| %>
+        <article class="booking-card">
+          <div class="booking-card-header">
+            <div>
+              <p class="booking-reference">Booking #<%= booking.id %></p>
+              <h2><%= booking.trip.from_city %> → <%= booking.trip.to_city %></h2>
+            </div>
+            <span class="status status-<%= booking.status %>"><%= booking.status.titleize %></span>
+          </div>
+
+          <div class="booking-card-details">
+            <span><strong>Departure</strong><%= booking.trip.departure_at.strftime("%d %b %Y, %I:%M %p") %></span>
+            <span><strong>Seats</strong><%= booking.seats.map(&:number).join(", ") %></span>
+            <span><strong>Total</strong>₹<%= booking.total_amount %></span>
+          </div>
+
+          <%= link_to "View Details", booking_path(booking), class: "details-link" %>
+        </article>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="empty-state">
+      <p>You have no bookings yet.</p>
+      <%= link_to "Find a bus", trips_path, class: "details-link" %>
+    </div>
+  <% end %>
+</section>

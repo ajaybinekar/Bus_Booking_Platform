@@ -1,0 +1,21 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+  host: <%= ENV.fetch("PGHOST", "localhost") %>
+  username: <%= ENV.fetch("PGUSER", "ajay-binekar") %>
+  password: <%= ENV.fetch("PGPASSWORD", "postgres") %>
+  port: <%= ENV.fetch("PGPORT", 5432) %>
+
+development:
+  <<: *default
+  database: <%= ENV.fetch("APP_DATABASE_NAME", "booking_platform_development") %>
+
+test:
+  <<: *default
+  database: <%= ENV.fetch("APP_DATABASE_NAME", "booking_platform_test") %>
+
+production:
+  <<: *default
+  database: <%= ENV.fetch("DATABASE_NAME", "booking_platform_production") %>

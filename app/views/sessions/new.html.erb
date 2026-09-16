@@ -1,0 +1,17 @@
+<section class="auth-card">
+  <h2>Login</h2>
+
+  <%= form_with url: login_path, method: :post, local: true do |form| %>
+    <div class="field-group">
+      <%= form.label :email %>
+      <%= form.email_field :email %>
+    </div>
+
+    <div class="field-group">
+      <%= form.label :password %>
+      <%= form.password_field :password %>
+    </div>
+
+    <%= form.submit "Login" %>
+  <% end %>
+</section>

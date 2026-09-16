@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>BusBook</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application", media: "all" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <%= render "layouts/navbar" %>
+
+    <% if flash[:notice].present? %>
+      <div class="flash notice"><%= flash[:notice] %></div>
+    <% end %>
+
+    <% if flash[:alert].present? %>
+      <div class="flash alert"><%= flash[:alert] %></div>
+    <% end %>
+
+    <main class="page-shell">
+      <%= yield %>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,107 @@
+<section class="hero">
+  <div>
+    <p class="eyebrow">Search your trip</p>
+    <h1>Book bus tickets in minutes</h1>
+  </div>
+</section>
+
+<section class="search-panel">
+  <%= form_with url: trips_path, method: :get, local: true, class: "search-form" do |form| %>
+    <div class="field-group">
+      <%= form.label :from_city, "From City" %>
+      <%= form.text_field :from_city, value: params[:from_city] %>
+    </div>
+
+    <div class="field-group">
+      <%= form.label :to_city, "To City" %>
+      <%= form.text_field :to_city, value: params[:to_city] %>
+    </div>
+
+    <div class="field-group">
+      <%= form.label :travel_date, "Travel Date" %>
+      <%= form.date_field :travel_date %>
+    </div>
+
+    <div class="field-group">
+      <%= form.label :operator_rating, "Operator Rating" %>
+      <%= form.number_field :operator_rating, step: 0.1, min: 0, max: 5 %>
+    </div>
+
+    <div class="field-group">
+      <%= form.label :min_price, "Min Price" %>
+      <%= form.number_field :min_price, step: 10 %>
+    </div>
+
+    <div class="field-group">
+      <%= form.label :max_price, "Max Price" %>
+      <%= form.number_field :max_price, step: 10 %>
+    </div>
+
+    <div class="field-group">
+      <%= form.label :bus_type, "Bus Type" %>
+      <%= form.select :bus_type, options_for_select([['AC','ac'], ['Non-AC','non_ac']], params[:bus_type]), include_blank: "Any" %>
+    </div>
+
+    <div class="field-group">
+      <%= form.label :seat_layout, "Seat Type" %>
+      <%= form.select :seat_layout, options_for_select([['Seater','seater'], ['Sleeper','sleeper']], params[:seat_layout]), include_blank: "Any" %>
+    </div>
+
+    <div class="field-group full">
+      <%= form.label :amenities, "Amenities" %>
+      <%= form.select :amenities, options_for_select([['Any', ''], ['Wi-Fi', 'wifi'], ['Charging', 'charging'], ['Water', 'water']], Array(params[:amenities]).first), include_blank: false %>
+    </div>
+
+    <div class="actions full">
+      <%= form.submit "Search Buses" %>
+    </div>
+  <% end %>
+</section>
+
+<section class="results">
+  <% if @trips.present? %>
+    <% @trips.each do |trip| %>
+      <article class="trip-card">
+        <div class="trip-head">
+          <div>
+            <h3><%= trip.operator.name %></h3>
+            <p><%= trip.bus_type.upcase %> • <%= trip.seat_layout.titleize %></p>
+          </div>
+          <div class="rating">⭐ <%= trip.operator.rating %></div>
+        </div>
+
+        <div class="route">
+          <span><%= trip.from_city %></span>
+          <span>→</span>
+          <span><%= trip.to_city %></span>
+        </div>
+
+        <div class="meta">
+          <span><%= trip.departure_at.strftime("%d %b, %I:%M %p") %></span>
+          <span>₹<%= trip.base_price %></span>
+        </div>
+
+        <div class="amenities">
+          <% trip.amenities.to_a.each do |amenity| %>
+            <span><%= amenity %></span>
+          <% end %>
+        </div>
+
+        <% available_seat = trip.available_seats.first %>
+        <div class="booking-action">
+          <% if available_seat %>
+            <%= form_with url: create_booking_path, method: :post, local: true, data: { turbo: false } do %>
+              <%= hidden_field_tag :trip_id, trip.id %>
+              <%= hidden_field_tag :seat_ids, available_seat.id %>
+              <%= submit_tag "Book Now" %>
+            <% end %>
+          <% else %>
+            <span class="sold-out">Currently unavailable</span>
+          <% end %>
+        </div>
+      </article>
+    <% end %>
+  <% else %>
+    <div class="empty-state">No buses found for the selected route and filters.</div>
+  <% end %>
+</section>

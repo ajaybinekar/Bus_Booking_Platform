@@ -1,0 +1,16 @@
+<section class="booking-summary">
+  <h2>Booking Details</h2>
+
+  <div class="summary-card">
+    <p><strong>Trip:</strong> <%= @booking.trip.from_city %> → <%= @booking.trip.to_city %></p>
+    <p><strong>Operator:</strong> <%= @booking.trip.operator.name %></p>
+    <p><strong>Departure:</strong> <%= @booking.trip.departure_at.strftime("%d %b, %I:%M %p") %></p>
+    <p><strong>Seats:</strong> <%= @booking.seats.map(&:number).join(", ") %></p>
+    <p><strong>Total:</strong> ₹<%= @booking.total_amount %></p>
+    <p><strong>Status:</strong> <%= @booking.status %></p>
+
+    <% if @booking.status == "confirmed" %>
+      <%= button_to "Cancel Booking", cancel_booking_path(@booking), method: :post, class: "danger-button" %>
+    <% end %>
+  </div>
+</section>

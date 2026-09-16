@@ -1,0 +1,16 @@
+<section class="summary-card confirmation-card">
+  <p class="eyebrow">Seats reserved</p>
+  <h2>Confirm your booking</h2>
+
+  <p><strong>Trip:</strong> <%= @hold.trip.from_city %> → <%= @hold.trip.to_city %></p>
+  <p><strong>Operator:</strong> <%= @hold.trip.operator.name %></p>
+  <p><strong>Departure:</strong> <%= @hold.trip.departure_at.strftime("%d %b, %I:%M %p") %></p>
+  <p><strong>Seats:</strong> <%= @hold.seats.map(&:number).join(", ") %></p>
+  <p><strong>Total:</strong> ₹<%= @hold.total_amount %></p>
+  <p><strong>Hold expires:</strong> <%= @hold.expires_at.strftime("%I:%M %p") %></p>
+
+  <%= form_with url: confirm_booking_path, method: :post, local: true do %>
+    <%= hidden_field_tag :hold_id, @hold.id %>
+    <%= submit_tag "Confirm Booking" %>
+  <% end %>
+</section>

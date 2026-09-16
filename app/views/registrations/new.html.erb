@@ -1,0 +1,27 @@
+<section class="auth-card">
+  <h2>Create account</h2>
+
+  <%= form_with model: @user, url: signup_path, local: true do |form| %>
+    <div class="field-group">
+      <%= form.label :name %>
+      <%= form.text_field :name %>
+    </div>
+
+    <div class="field-group">
+      <%= form.label :email %>
+      <%= form.email_field :email %>
+    </div>
+
+    <div class="field-group">
+      <%= form.label :password %>
+      <%= form.password_field :password %>
+    </div>
+
+    <div class="field-group">
+      <%= form.label :password_confirmation %>
+      <%= form.password_field :password_confirmation %>
+    </div>
+
+    <%= form.submit "Create Account" %>
+  <% end %>
+</section>
